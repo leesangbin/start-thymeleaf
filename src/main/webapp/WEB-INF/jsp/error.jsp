@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="EUC-KR"/>
-<title>index.jsp</title>
+<title>Insert title here</title>
 </head>
 <body>
-index.jsp
+error.jsp
 
 
 	<c:out value="<xmp>" escapeXml="true"></c:out>

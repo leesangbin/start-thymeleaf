@@ -43,3 +43,15 @@ yellow
 	
 https://github.com/netgloo/spring-boot-samples
 	spring-boot-samples/spring-boot-logging/
+	
+	
+	
+Deploy Spring Boot to Tomcat
+	extends SpringBootServletInitializer
+	pom.xml - jar -> war
+		
+		<packaging>war</packaging><!-- 	외부톰캣용 -->
+		
+Converting a Spring Boot JAR Application to a WAR	 
+Create a deployable war file
+		

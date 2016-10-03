@@ -1,6 +1,7 @@
 package com.example.common;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -52,12 +53,9 @@ public class CommonController {
 
 	@RequestMapping("/")
 	// @RequestMapping("/index")
-	public String home(Model model) {
-		log.debug("This is a debug message");
-		log.info("This is an info message");
-		log.warn("This is a warn message");
-		log.error("This is an error message");
-		new LoggingHelper().helpMethod();
+	public String home(Locale locale, Model model) {
+
+		log.info("Welcome home! The client locale is {}.", locale);
 		model.addAttribute("name", "spring test");
 		return "index";
 	}
