@@ -1,18 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/common-layout"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<title>Insert title here</title>
+
+ 
+
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+	
+	<link href="/css/index-style.css" rel="stylesheet" />
+
+    
+	<script layout:fragment="custom-script">
+		console.log('script for page2222');
+		userLang = navigator.language || navigator.userLanguage;
+		alert ("브라우저 설정 언어 : " + userLang);
+		
+		
+
+// <!-- Begin 
+if (navigator.appName == 'Netscape') 
+var language = navigator.language; 
+else 
+var language = navigator.browserLanguage; 
+if (language.indexOf('en') > -1) document.location.href = 'english.html'; 
+else if (language.indexOf('de') > -1) document.location.href = 'german.html'; 
+else if (language.indexOf('it') > -1) document.location.href = 'italian.html'; 
+else 
+document.location.href = 'defaultpage.html'; 
+// End --> 
+
+
+
+
+
+var type = navigator.appName
+var lang;
+if (type=="Netscape")
+    lang = navigator.language
+else
+    lang = navigator.userLanguage
+// 국가코드에서 앞 2글자만 자름
+var lang = lang.substr(0,2)
+// 한글인 경우 한글페이지로 이동
+if (lang == "ko")
+    window.location.replace('korean.html')
+// 다른 언어인 경우 영문페이지로 이동
+else
+    window.location.replace('english.html')
+
+
+
+
+
+
+
+	</script>
+	
+
 </head>
 <body>
+ 
+ 
+
+	<section class="index" layout:fragment="content">
+		<p>Page Content</p>
+		index.html
+		<p>
+		
+			<h2 th:text="#{index.hello}">Rows</h2>
+			<span th:inline="text">[[#{index.hello}]]</span>
+<!-- 			<span th:inline="text">[[$#{hello}]]</span> -->
+			<h2 th:text="#{index.hello}">List of Seed Starters</h2>
+		</p>
+		<p th:text="#{index.hello}">BUG</p>
+		<p>
+			<span th:inline="text">[[${name}]]</span>
+			<span th:inline="text">[[${#dates.year(#dates.createNow())}]]</span>
+			<span th:remove="tag" th:inline="text">[[${#dates.year(#dates.createNow())}]]</span>
+			<select >
+			  <option th:each="year : ${#numbers.sequence(1900, #dates.year(#dates.createNow()))}"
+			      th:value="${year}" th:text="${year}">
+			  </option>
+			</select>
+		</p>
+	</section>
 
 
 
-
-
-index.html
-<p>
-<span th:text="#{hello}"></span>
-</p>
 </body>
+
 </html>
