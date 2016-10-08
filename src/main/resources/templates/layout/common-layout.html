@@ -11,7 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
 	<title layout:title-pattern="$CONTENT_TITLE :: $DECORATOR_TITLE">Site	Tilte</title>
-	<link href="/css/common-style.css" rel="stylesheet" />
+	<link href="../css/common-style.css" rel="stylesheet" />
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -400,6 +400,18 @@
         </nav>
 
         <div id="page-wrapper">
+			<header layout:fragment="header">
+				<h1>Layout Tilte</h1>
+			</header>
+			<section layout:fragment="content">
+				<p>Layout Content</p>
+			</section>
+			<footer layout:fragment="footer">
+				<p>Layout Footer</p>
+			</footer>
+			
+			
+			
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
@@ -939,15 +951,6 @@
                 <!-- /.col-lg-4 -->
             </div>
             <!-- /.row -->
-			<header layout:fragment="header">
-				<h1>Layout Tilte</h1>
-			</header>
-			<section layout:fragment="content">
-				<p>Layout Content</p>
-			</section>
-			<footer layout:fragment="footer">
-				<p>Layout Footer</p>
-			</footer>
         </div>
         <!-- /#page-wrapper -->
 

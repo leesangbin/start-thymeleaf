@@ -5,6 +5,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 
+	<base href="/pages/" />
  
 
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
@@ -12,50 +13,21 @@
 	<link href="/css/index-style.css" rel="stylesheet" />
 
     
-	<script layout:fragment="custom-script">
+	<script >
 		console.log('script for page2222');
 		userLang = navigator.language || navigator.userLanguage;
-		alert ("브라우저 설정 언어 : " + userLang);
+		console.log ("브라우저 설정 언어 : " + userLang);
+
+		// // 국가코드에서 앞 2글자만 자름
+		var lang = userLang.substr(0,2)
+		// // 한글인 경우 한글페이지로 이동
+		console.log ("브라우저 설정 언어 : " , lang);
+		// if (lang == "ko")
+//		     window.location.replace('korean.html')
+		// // 다른 언어인 경우 영문페이지로 이동
+		// else
+//		     window.location.replace('english.html')
 		
-		
-
-// <!-- Begin 
-if (navigator.appName == 'Netscape') 
-var language = navigator.language; 
-else 
-var language = navigator.browserLanguage; 
-if (language.indexOf('en') > -1) document.location.href = 'english.html'; 
-else if (language.indexOf('de') > -1) document.location.href = 'german.html'; 
-else if (language.indexOf('it') > -1) document.location.href = 'italian.html'; 
-else 
-document.location.href = 'defaultpage.html'; 
-// End --> 
-
-
-
-
-
-var type = navigator.appName
-var lang;
-if (type=="Netscape")
-    lang = navigator.language
-else
-    lang = navigator.userLanguage
-// 국가코드에서 앞 2글자만 자름
-var lang = lang.substr(0,2)
-// 한글인 경우 한글페이지로 이동
-if (lang == "ko")
-    window.location.replace('korean.html')
-// 다른 언어인 경우 영문페이지로 이동
-else
-    window.location.replace('english.html')
-
-
-
-
-
-
-
 	</script>
 	
 

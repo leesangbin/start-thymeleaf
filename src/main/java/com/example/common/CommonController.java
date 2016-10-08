@@ -67,7 +67,7 @@ public class CommonController {
 		log.info("This is an info message");
 		log.warn("This is a warn message");
 		log.error("This is an error message");
-		new LoggingHelper().helpMethod();
+//		new LoggingHelper().helpMethod();
 		model.addAttribute("name", "spring test");
 		// return "index";
 	}
