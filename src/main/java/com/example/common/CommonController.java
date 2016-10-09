@@ -1,13 +1,10 @@
 package com.example.common;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.helpers.LoggingHelper;
 
@@ -19,10 +16,20 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Controller
-// @RestController
 // @RequestMapping("/common")
 public class CommonController {
 
+	@RequestMapping("/index")
+	// @RequestMapping("/index")
+	public void index(Model model) {
+		// log.debug("This is a debug message");
+		log.info("This is an info message");
+		// log.warn("This is a warn message");
+		// log.error("This is an error message");
+		// new LoggingHelper().helpMethod();
+		model.addAttribute("name", "spring test");
+		// return "index";
+	}
 	// @RequestMapping("/")
 	// @ResponseBody
 	// public String index2() {
@@ -55,30 +62,11 @@ public class CommonController {
 	// @RequestMapping("/index")
 	public String home(Locale locale, Model model) {
 
-		log.info("Welcome home! The client locale is {}.", locale);
-		model.addAttribute("name", "spring test");
+		String name = "spring test";
+		model.addAttribute("name", name);
+		log.info("/   Welcome home! The client locale is {}.", locale);
+		log.info("/   name is {}.", name);
 		return "index";
-	}
-
-	@RequestMapping("/index")
-	// @RequestMapping("/index")
-	public void index(Model model) {
-		log.debug("This is a debug message");
-		log.info("This is an info message");
-		log.warn("This is a warn message");
-		log.error("This is an error message");
-//		new LoggingHelper().helpMethod();
-		model.addAttribute("name", "spring test");
-		// return "index";
-	}
-
-	@RequestMapping("/json")
-	public @ResponseBody Map<String, String> callSomething() {
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("url", "http://www.leveluplunch.com");
-
-		return map;
 	}
 
 }

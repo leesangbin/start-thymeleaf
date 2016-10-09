@@ -3,7 +3,7 @@ start-thymeleaf
 
 
 
-
+http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-use-thymeleaf-3
 
 
 
