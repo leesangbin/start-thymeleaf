@@ -12,24 +12,24 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
 	<title layout:title-pattern="$CONTENT_TITLE :: $DECORATOR_TITLE">Site	Tilte</title>
-	<link href="../css/common-style.css" rel="stylesheet" />
+	<link href="../css/common-style.css" rel="stylesheet" th:href="@{/css/common-style.css}" />
 
     <!-- Bootstrap Core CSS -->
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
     <!-- MetisMenu CSS -->
-    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" th:href="@{/bower_components/metisMenu/dist/metisMenu.min.css}" />
 
     <!-- Timeline CSS -->
-    <link href="../dist/css/timeline.css" rel="stylesheet">
+    <link href="../dist/css/timeline.css" rel="stylesheet" th:href="@{/dist/css/timeline.css}" />
 
     <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet" th:href="@{/dist/css/sb-admin-2.css}" />
 
     <!-- Morris Charts CSS -->
-    <link href="../bower_components/morrisjs/morris.css" rel="stylesheet">
+    <link href="../bower_components/morrisjs/morris.css" rel="stylesheet" th:href="@{/bower_components/morrisjs/morris.css}" />
 
     <!-- Custom Fonts -->
-    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -64,25 +64,46 @@
 </script>
 </head>
 <body>
+test
 
+http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
+  <div th:insert="layout/fragments/footer :: copy"></div>
 
+  <div th:replace="layout/fragments/footer :: copy"></div>
 
+  <div th:include="layout/fragments/footer :: copy"></div>
+th:insert is the simplest: it will simply insert the specified fragment as the body of its host tag.
+
+th:replace actually replaces its host tag with the specified fragment.
+
+th:include is similar to th:insert, but instead of inserting the fragment it only inserts the contents of this fragment.
+  <div><footer>
+				copy
+			</footer></div>
+
+  <footer>
+				copy
+			</footer>
+
+  <div>
+				copy
+			</div>
     <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div layout:fragment="navbar-right" class="navbar-header">
+            <div th:replace="~{layout/fragments/navbar-header}" class="navbar-header">
                 navbar-header
             </div>
             <!-- /.navbar-header -->
 
-            <ul layout:fragment="navbar-right" class="nav navbar-top-links navbar-right">
+            <ul th:replace="~{layout/fragments/navbar-right}" class="nav navbar-top-links navbar-right">
                navbar-right
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
 
-            <div layout:fragment="sidebar" class="navbar-default sidebar" role="navigation">
+            <div th:replace="~{layout/fragments/sidebar}" class="navbar-default sidebar" role="navigation">
                 sidebar 
                 <!-- /.sidebar-collapse -->
             </div>
