@@ -40,21 +40,23 @@
 
 
     <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js" th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
 
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js" th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js" th:src="@{/bower_components/metisMenu/dist/metisMenu.min.js}"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
+    <script src="../bower_components/raphael/raphael-min.js" th:src="@{/bower_components/raphael/raphael-min.js}"></script>
+    <script src="../bower_components/morrisjs/morris.min.js" th:src="@{/bower_components/morrisjs/morris.min.js}"></script>
+    <script src="../js/morris-data.js" th:src="@{/js/morris-data.js}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../dist/js/sb-admin-2.js" th:src="@{/dist/js/sb-admin-2.js}"></script>
 
 
 
@@ -109,17 +111,6 @@ th:include is similar to th:insert, but instead of inserting the fragment it onl
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-
-        
-<!-- 			<header layout:fragment="header"> -->
-<!-- 				<h1>Layout Tilte</h1> -->
-<!-- 			</header> -->
-<!-- 			<section layout:fragment="content"> -->
-<!-- 				<p>Layout Content</p> -->
-<!-- 			</section> -->
-<!-- 			<footer layout:fragment="footer"> -->
-<!-- 				<p>Layout Footer</p> -->
-<!-- 			</footer> -->
         <div id="page-wrapper" layout:fragment="content">
 			
 			

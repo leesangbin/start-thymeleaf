@@ -4,60 +4,387 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>real Grid sample</title>
+ 
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
-	
-	<link href="/css/index-style.css" rel="stylesheet" />
+    <script type="text/javascript" src="./scripts/realgridjs-lic.js" th:src="@{/js/real-grid/realgridjs-lic.js}"></script>
+    <script type="text/javascript" src="./scripts/realgridjs_eval.1.1.18.min.js" th:src="@{/js/real-grid/realgridjs_eval.1.1.18.min.js}"></script>
+    <script type="text/javascript" src="./scripts/realgridjs-api.1.1.18.js" th:src="@{/js/real-grid/realgridjs-api.1.1.18.js}"></script>
+    <script type="text/javascript" src="./scripts/jszip.min.js" th:src="@{/js/real-grid/jszip.min.js}"></script>
 
-    
-	<script >
-		console.log('script for page2222');
-		userLang = navigator.language || navigator.userLanguage;
-		console.log ("브라우저 설정 언어 : " + userLang);
+    <script type="text/javascript">
+        var gridView;
+        var dataProvider;
 
-		// // 국가코드에서 앞 2글자만 자름
-		var lang = userLang.substr(0,2)
-		// // 한글인 경우 한글페이지로 이동
-		console.log ("브라우저 설정 언어 : " , lang);
-		// if (lang == "ko")
-//		     window.location.replace('korean.html')
-		// // 다른 언어인 경우 영문페이지로 이동
-		// else
-//		     window.location.replace('english.html')
-var dd = '[[#{index.hello}]]';
-		console.log(dd);
-	</script>
-	
+        var realgrids = ['realgrid1','realgrid2','realgrid3','realgrid4'];
+        var gridViews = ['gridView1','gridView2','gridView3'];
+        var dataProviders = ['dataProvider1','dataProvider2','dataProvider3'];
 
+        
+        
+        
+        for(var i=0; i<realgrids.length; i++) {
+
+            var gridNo = i+1;
+            window['gridView'+gridNo] ;
+            window['dataProvider'+gridNo]={} ;
+        }
+
+
+        $(document).ready(function () {
+
+            //
+            setEvent();
+            $( "#tabs" ).tabs();
+            //
+// 			$('#myTabs a').click(function (e) {
+// 			  e.preventDefault()
+// 			  $(this).tab('show')
+// 			});
+
+
+            RealGridJS.setTrace(false);
+            RealGridJS.setRootContext("/js/real-grid");
+            buildGrid(realgrids);
+        });
+        function buildGrid(gridId){
+
+
+            for(var i=0; i<realgrids.length; i++) {
+
+                var gridNo = i+1;
+                var globalVariable = realgrids[i];
+//                window['p'+i] = "hello " + i;
+//                window['gridView'+gridNo] ;
+//                window['dataProvider'+gridNo]={} ;
+
+                var gridHtml = '<div id="'+realgrids[i]+'" style="width: 100%; height: 200px;"></div>'
+                $('#'+realgrids[i]).replaceWith(gridHtml);
+
+                window['dataProvider'+gridNo] = new RealGridJS.LocalDataProvider();
+                window['gridView'+gridNo] = new RealGridJS.GridView(realgrids[i]);
+                window['gridView'+gridNo].setDataSource(window['dataProvider'+gridNo]);
+
+                //
+                setFields(window['dataProvider'+gridNo] );
+                //
+                setColumns(window['gridView'+gridNo] );
+                //
+                setRows(window['dataProvider'+gridNo] );
+
+            }
+
+
+
+        }
+
+        function toggleFocus() {
+            var focusCell = gridView.getCurrent();
+            focusCell.dataRow = 0;
+            if (focusCell.fieldName == "field1") {
+                focusCell.column = "col2";
+                focusCell.fieldName = "field2";
+            }
+            else {
+                focusCell.column = "col1";
+                focusCell.fieldName = "field1";
+            }
+
+            gridView.setCurrent(focusCell);
+        }
+        function setRows(dataProvider) {
+
+
+            var data = [
+                ["송윤아", "10", "33"],
+                ["전도연", "20", "22"],
+                ["하지원", "10", "11"],
+                ["전지현", "20", "44"]
+            ];
+            dataProvider.setRows(data);
+        }
+        function setColumns(gridView) {
+
+            var columns = [
+                {
+                    name: "col1",
+                    fieldName: "field1",
+                    header : {
+                        text: "이름"
+                    },
+                    width: 150
+                },
+                {
+                    name: "col2",
+                    fieldName: "field2",
+                    header : {
+                        text: "국어"
+                    },
+                    width: 150
+                },
+                {
+                    name: "col3",
+                    fieldName: "field3",
+                    header : {
+                        text: "수학"
+                    },
+                    width: 150
+                }
+            ];
+
+            gridView.setColumns(columns);
+
+            //
+
+//            var header = gridView.getColumnProperty("col1", "header");
+//            header.text = "컬럼2";
+//
+//            gridView.setColumnProperty("col1", "header", header);
+
+
+        }
+        function setFields(dataProvider) {
+
+            var fields = [
+                {
+                    fieldName: "field1"
+                },
+                {
+                    fieldName: "field2"
+                },
+                {
+                    fieldName: "field3"
+                }
+            ];
+
+            dataProvider.setFields(fields);
+        }
+        function setEvent() {
+            //버튼을 클릭하면 포커스된 셀을 다른 셀로 변경합니다.
+            $("#btnToggleFocus").on("click", function () {
+                toggleFocus();
+            });
+
+            //버튼을 클릭하면 포커스된 셀의 RowId를 표시합니다.
+            $("#btnPopupRowId").on("click", function () {
+                popupRowId();
+            });
+
+            $("#btnPopupRowId2").on("click", function () {
+                popupRowId();
+            });
+
+            //버튼을 클릭하면 포커스행을 두번째 행으로 선택합니다.
+            $("#btnSetCurrent2Row").on("click", function(){
+                setCurrent2Row();
+            })
+
+            //버튼을 클릭하면 ItemIndex와 RowId를 표시 합니다.
+            $("#btnPopupIndex1").on("click", function(){
+                popupIndex();
+            })
+            //버튼을 클릭하면 정렬순서를 바꿉니다.
+            $("#btnChangeOrder").on("click", function(){
+                changeOrder();
+            })
+
+            //버튼을 클릭하면 ItemIndex와 RowId를 표시 합니다.
+            $("#btnPopupIndex2").on("click", function(){
+                popupIndex();
+            })
+
+
+            // SortStyle을 NONE으로 설정
+            $("#btnChangeSortStyleNone").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.NONE);
+            })
+
+            // SortStyle을 EXCLUSIVE로 설정
+            $("#btnChangeSortStyleExclusive").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.EXCLUSIVE);
+            })
+
+            // SortStyle을 INCLUSIVE으로 설정
+            $("#btnChangeSortStyleInclusive").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.INCLUSIVE);
+            })
+
+            // SortStyle을 REVERSE로 설정
+            $("#btnChangeSortStyleReverse").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.REVERS);
+            })
+
+
+            // 정렬초기화
+            $("#btnResetOrder").on("click", function(){
+                gridView.orderBy([], []);
+            })
+
+            // 국어, 수학 컬럼을 순방향 정렬하기위해 orderBy() 함수 사용
+            $("#btnChangeOrders").on("click", function(){
+                gridView.orderBy(["field2", "field3"], ["ascending", "ascending"]);
+            })
+            $("#btn_search").on("click", function(){
+            	var arr_form = $("#search").serializeArray();
+            	console.log('arr_form',arr_form);
+            	
+            	var param =  JSON.stringify(arr_form);
+            	console.log('param',param);
+            	
+            	
+            	
+    			var o = {};
+    			$.each(arr_form,function(){
+//     				o[this.name] = this.value ||'';
+			        if (o[this.name] || o[this.name] == '') {
+			            if (!o[this.name].push) {
+			                o[this.name] = [o[this.name]];
+			            }
+			            o[this.name].push(this.value || '');
+			        } else {
+			            o[this.name] = this.value || '';
+			        }
+    			})
+    			console.log('o',o);
+    			console.log('o',JSON.stringify(o));
+    			 
+
+    			var o2 = {};
+    			$("#search").each(function(i){
+    				
+    				var name = $(this).attr('name');
+    				
+    				console.log('name',name);
+    				
+
+    	            switch($(this).attr("type")){
+		                case "select":
+		                    o2[name] = $(this).val();
+		                    break;
+		                case "textarea":
+		                    o2[name] = $(this).val();
+		                    break;
+		                case "text":
+		                    o2[name] = $(this).val();
+		                    break;
+    	                case "checkbox":
+    	                    if($(this).attr("checked")){
+    	                        o2[name] = $(this).val();
+    	                    }
+    	                    break;
+    	                case "radio":
+    	                    if($(this).attr("checked")){
+    	                        o2[name] = $(this).val();
+    	                    }
+    	                    break;
+    	                default:
+    	                    break;
+    	            }
+    	             
+    			})
+
+    			console.log('o2',o2);
+    			console.log('o2',JSON.stringify(o2));
+    			 
+            })
+            
+            
+            
+            
+            
+        }
+
+        function popupRowId() {
+            var focusCell = gridView.getCurrent();
+            alert(focusCell.dataRow);
+            alert(focusCell.itemIndex);
+        }
+
+        //동적으로 두 번째 행을 선택하는 함수
+        function setCurrent2Row(){
+            var current = {};
+            current.dataRow = 1;
+            gridView.setCurrent(current);
+        }
+
+        //ItemIndex와 RowId를 팝업하는 함수
+        function popupIndex(){
+            var focusCell = gridView.getCurrent();
+            alert("ItemIndex:" + focusCell.itemIndex + ", RowId:" + focusCell.dataRow);
+        }
+
+        //두 번째 필드의 데이터를 기준으로 역순으로 정렬
+        function changeOrder(){
+            var fields = ["field2"];
+            var dirs = [RealGridJS.SortDirection.DESCENDING];
+            gridView.orderBy(fields, dirs);
+        }
+
+        function setSortStyles(style) {
+            var options = {};
+            options.style = style;
+            gridView.setSortingOptions(options);
+
+            resetOrders();
+        }
+
+        function resetOrders() {
+            gridView.orderBy([], []);
+        }
+    </script>
 </head>
 <body>
- 
- 
-
 	<div id="page-wrapper" layout:fragment="content">
-		<p>Page Content</p>
-		index.html
-		<p>
-			<span th:inline="text">[[#{index.hello}]]</span>
-		</p>
 		
-			<h2 th:text="#{index.hello}">Rows</h2>
-			<h2 th:text="#{index.hello}">List of Seed Starters</h2>
-			[[#{index.hello}]],[[#{index.hello}]]
-		<p th:text="#{index.hello}">BUG</p>
-		<p>
-			<span th:inline="text">[[${name}]]</span>
-			<span th:inline="text">[[${#dates.year(#dates.createNow())}]]</span>
-			<span th:remove="tag" th:inline="text">[[${#dates.year(#dates.createNow())}]]</span>
-			<select >
-			  <option th:each="year : ${#numbers.sequence(1900, #dates.year(#dates.createNow()))}"
-			      th:value="${year}" th:text="${year}">
-			  </option>
-			</select>
-		</p>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Nunc tincidunt</a></li>
+    <li><a href="#tabs-2">Proin dolor</a></li>
+    <li><a href="#tabs-3">Aenean lacinia</a></li>
+  </ul>
+  <div id="tabs-1">
+		<div id="realgrid3" style="width: 100%; height: 1200px;"></div> 
+  </div>
+  
+  <div id="tabs-2">
+    
+			<div id="realgrid4" style="width: 100%; height: 1200px;"></div> 
+	 </div>
+  <div id="tabs-3">
+    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+  </div>
+</div>
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+		    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+		    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+		    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+		  </ul>
 		
-		
-		
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="home">
+		    ...home
+<div id="realgrid1" style="width: 100%; height: 1200px;"></div>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="profile">
+		    ...profile
+<div id="realgrid2" style="width: 100%; height: 1200px;"></div>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="messages">
+		    ...messages
+<div id="realgrid3" style="width: 100%; height: 1200px;"></div> 
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="settings">
+		    ...settings
+<div id="realgrid4" style="width: 100%; height: 1200px;"></div> 
+		    </div>
+		  </div>
+		 
+
+
 		    <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Form</h1>
@@ -65,11 +392,11 @@ var dd = '[[#{index.hello}]]';
                     
                     
 <!--                     http://getbootstrap.com/css/#forms -->
-                    <form>
-	                    <select class="form-control">
+                    <form id="search">
+	                    <select class="form-control" name="select">
 						  <option>1</option>
 						  <option>2</option>
-						  <option>3</option>
+						  <option selected="selected">3</option>
 						  <option>4</option>
 						  <option>5</option>
 						</select>
@@ -81,7 +408,7 @@ var dd = '[[#{index.hello}]]';
 						
 					  <div class="form-group">
 					    <label for="exampleInputName2">Name</label>
-					    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+					    <input type="text" name="name" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
 					  </div>
 					  
 					  
@@ -96,14 +423,31 @@ var dd = '[[#{index.hello}]]';
 					  </div>
 					  <div class="form-group">
 					    <label for="exampleInputPassword1">Password</label>
-					    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
 					  </div>
-					  <div class="form-group">
-					    <label for="exampleInputFile">File input</label>
-					    <input type="file" id="exampleInputFile">
-					    <p class="help-block">Example block-level help text here.</p>
-					  </div>
-					  <textarea class="form-control" rows="3"></textarea>
+					  <textarea class="form-control" rows="3" name="textarea"></textarea>
+				  	<div class="checkbox">
+						<label class="checkbox-inline">
+						  <input type="checkbox" name="checkbox" id="inlineCheckbox1" value="option1"> 1
+						</label>
+						<label class="checkbox-inline">
+						  <input type="checkbox" name="checkbox" id="inlineCheckbox2" value="option2"> 2
+						</label>
+						<label class="checkbox-inline">
+						  <input type="checkbox" name="checkbox" id="inlineCheckbox3" value="option3"> 3
+						</label>
+				  	</div>
+				  	<div class="radio">
+						<label class="radio-inline">
+						  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
+						</label>
+				  	</div>
 					  <div class="checkbox">
 					    <label>
 					      <input type="checkbox"> Check me out
@@ -141,37 +485,21 @@ var dd = '[[#{index.hello}]]';
 					  </label>
 					</div>
 				
-				  	<div class="checkbox">
-						<label class="checkbox-inline">
-						  <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-						</label>
-						<label class="checkbox-inline">
-						  <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-						</label>
-						<label class="checkbox-inline">
-						  <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-						</label>
-				  	</div>
-				  	<div class="radio">
-						<label class="radio-inline">
-						  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
-						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
-						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
-						</label>
-				  	</div>
 					
 					
 					
 					  <button type="submit" class="btn btn-default">Submit</button>
+						<button type="button" class="btn btn-default" id="btn_search">search</button>
 					</form>
                     
                     <hr />
 <form>
   <fieldset disabled>
+					  <div class="form-group">
+					    <label for="exampleInputFile">File input</label>
+					    <input type="file" id="exampleInputFile">
+					    <p class="help-block">Example block-level help text here.</p>
+					  </div>
     <div class="form-group">
       <label for="disabledTextInput">Disabled input</label>
       <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
@@ -856,11 +1184,12 @@ var dd = '[[#{index.hello}]]';
                 </div>
                 <!-- /.col-lg-4 -->
             </div>
-            <!-- /.row -->
+            <!-- /.row -->		
+		
 	</div>
 
 
 
-</body>
 
+</body>
 </html>

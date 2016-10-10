@@ -69,4 +69,15 @@ public class CommonController {
 		return "index";
 	}
 
+	@RequestMapping("/grid")
+	// @RequestMapping("/index")
+	public void grid(Model model) {
+		// log.debug("This is a debug message");
+		log.info("This is an info message");
+		// log.warn("This is a warn message");
+		// log.error("This is an error message");
+		// new LoggingHelper().helpMethod();
+		// model.addAttribute("name", "spring test");
+		// return "index";
+	}
 }

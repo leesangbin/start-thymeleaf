@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>real Grid sample</title>
+
+
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="./scripts/jquery-3.1.0.min.js"></script>
+
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="./scripts/realgridjs-lic.js"></script>
+    <script type="text/javascript" src="./scripts/realgridjs_eval.1.1.18.min.js"></script>
+    <script type="text/javascript" src="./scripts/realgridjs-api.1.1.18.js"></script>
+    <script type="text/javascript" src="./scripts/jszip.min.js"></script>
+
+    <script type="text/javascript">
+        var gridView;
+        var dataProvider;
+
+        var realgrids = ['realgrid1','realgrid2','realgrid3'];
+        var gridViews = ['gridView1','gridView2','gridView3'];
+        var dataProviders = ['dataProvider1','dataProvider2','dataProvider3'];
+
+        for(var i=0; i<realgrids.length; i++) {
+
+            var gridNo = i+1;
+            window['gridView'+gridNo] ;
+            window['dataProvider'+gridNo]={} ;
+        }
+
+
+        $(document).ready(function () {
+            buildGrid(realgrids);
+            //
+
+        });
+        function buildGrid(gridId){
+
+            //
+            setEvent();
+
+            RealGridJS.setTrace(false);
+            RealGridJS.setRootContext("./scripts");
+
+            for(var i=0; i<realgrids.length; i++) {
+
+                var gridNo = i+1;
+                var globalVariable = realgrids[i];
+//                window['p'+i] = "hello " + i;
+//                window['gridView'+gridNo] ;
+//                window['dataProvider'+gridNo]={} ;
+
+                var gridHtml = '<div id="'+realgrids[i]+'" style="width: 100%; height: 200px;"></div>'
+                $('#'+realgrids[i]).replaceWith(gridHtml);
+
+                window['dataProvider'+gridNo] = new RealGridJS.LocalDataProvider();
+                window['gridView'+gridNo] = new RealGridJS.GridView(realgrids[i]);
+                window['gridView'+gridNo].setDataSource(window['dataProvider'+gridNo]);
+
+                //
+                setFields(window['dataProvider'+gridNo] );
+                //
+                setColumns(window['gridView'+gridNo] );
+                //
+                setRows(window['dataProvider'+gridNo] );
+
+            }
+
+
+
+        }
+
+        function toggleFocus() {
+            var focusCell = gridView.getCurrent();
+            focusCell.dataRow = 0;
+            if (focusCell.fieldName == "field1") {
+                focusCell.column = "col2";
+                focusCell.fieldName = "field2";
+            }
+            else {
+                focusCell.column = "col1";
+                focusCell.fieldName = "field1";
+            }
+
+            gridView.setCurrent(focusCell);
+        }
+        function setRows(dataProvider) {
+
+
+            var data = [
+                ["송윤아", "10", "33"],
+                ["전도연", "20", "22"],
+                ["하지원", "10", "11"],
+                ["전지현", "20", "44"]
+            ];
+            dataProvider.setRows(data);
+        }
+        function setColumns(gridView) {
+
+            var columns = [
+                {
+                    name: "col1",
+                    fieldName: "field1",
+                    header : {
+                        text: "이름"
+                    },
+                    width: 150
+                },
+                {
+                    name: "col2",
+                    fieldName: "field2",
+                    header : {
+                        text: "국어"
+                    },
+                    width: 150
+                },
+                {
+                    name: "col3",
+                    fieldName: "field3",
+                    header : {
+                        text: "수학"
+                    },
+                    width: 150
+                }
+            ];
+
+            gridView.setColumns(columns);
+
+            //
+
+//            var header = gridView.getColumnProperty("col1", "header");
+//            header.text = "컬럼2";
+//
+//            gridView.setColumnProperty("col1", "header", header);
+
+
+        }
+        function setFields(dataProvider) {
+
+            var fields = [
+                {
+                    fieldName: "field1"
+                },
+                {
+                    fieldName: "field2"
+                },
+                {
+                    fieldName: "field3"
+                }
+            ];
+
+            dataProvider.setFields(fields);
+        }
+        function setEvent() {
+            //버튼을 클릭하면 포커스된 셀을 다른 셀로 변경합니다.
+            $("#btnToggleFocus").on("click", function () {
+                toggleFocus();
+            });
+
+            //버튼을 클릭하면 포커스된 셀의 RowId를 표시합니다.
+            $("#btnPopupRowId").on("click", function () {
+                popupRowId();
+            });
+
+            $("#btnPopupRowId2").on("click", function () {
+                popupRowId();
+            });
+
+            //버튼을 클릭하면 포커스행을 두번째 행으로 선택합니다.
+            $("#btnSetCurrent2Row").on("click", function(){
+                setCurrent2Row();
+            })
+
+            //버튼을 클릭하면 ItemIndex와 RowId를 표시 합니다.
+            $("#btnPopupIndex1").on("click", function(){
+                popupIndex();
+            })
+            //버튼을 클릭하면 정렬순서를 바꿉니다.
+            $("#btnChangeOrder").on("click", function(){
+                changeOrder();
+            })
+
+            //버튼을 클릭하면 ItemIndex와 RowId를 표시 합니다.
+            $("#btnPopupIndex2").on("click", function(){
+                popupIndex();
+            })
+
+
+            // SortStyle을 NONE으로 설정
+            $("#btnChangeSortStyleNone").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.NONE);
+            })
+
+            // SortStyle을 EXCLUSIVE로 설정
+            $("#btnChangeSortStyleExclusive").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.EXCLUSIVE);
+            })
+
+            // SortStyle을 INCLUSIVE으로 설정
+            $("#btnChangeSortStyleInclusive").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.INCLUSIVE);
+            })
+
+            // SortStyle을 REVERSE로 설정
+            $("#btnChangeSortStyleReverse").on("click", function(){
+                setSortStyles(RealGridJS.SortStyle.REVERS);
+            })
+
+
+            // 정렬초기화
+            $("#btnResetOrder").on("click", function(){
+                gridView.orderBy([], []);
+            })
+
+            // 국어, 수학 컬럼을 순방향 정렬하기위해 orderBy() 함수 사용
+            $("#btnChangeOrders").on("click", function(){
+                gridView.orderBy(["field2", "field3"], ["ascending", "ascending"]);
+            })
+        }
+
+        function popupRowId() {
+            var focusCell = gridView.getCurrent();
+            alert(focusCell.dataRow);
+            alert(focusCell.itemIndex);
+        }
+
+        //동적으로 두 번째 행을 선택하는 함수
+        function setCurrent2Row(){
+            var current = {};
+            current.dataRow = 1;
+            gridView.setCurrent(current);
+        }
+
+        //ItemIndex와 RowId를 팝업하는 함수
+        function popupIndex(){
+            var focusCell = gridView.getCurrent();
+            alert("ItemIndex:" + focusCell.itemIndex + ", RowId:" + focusCell.dataRow);
+        }
+
+        //두 번째 필드의 데이터를 기준으로 역순으로 정렬
+        function changeOrder(){
+            var fields = ["field2"];
+            var dirs = [RealGridJS.SortDirection.DESCENDING];
+            gridView.orderBy(fields, dirs);
+        }
+
+        function setSortStyles(style) {
+            var options = {};
+            options.style = style;
+            gridView.setSortingOptions(options);
+
+            resetOrders();
+        }
+
+        function resetOrders() {
+            gridView.orderBy([], []);
+        }
+    </script>
+</head>
+<body>
+
+<div id="realgrid1" style="width: 100%; height: 1200px;"></div>
+<div id="realgrid2" style="width: 100%; height: 1200px;"></div>
+<div id="realgrid3" style="width: 100%; height: 1200px;"></div>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnToggleFocus">포커스셀 변경하기</button>
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnPopupRowId">포커스셀 RowId 팝업하기</button>
+    버튼을 클릭하여 현재 포커스된 셀의 RowId가 팝업되는 것을 확인하세요.
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnPopupRowId2">포커스셀 ItemIndex 팝업하기</button>
+    버튼을 클릭하여 ItemIndex가 팝업 되는 것을 확인하세요.
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnSetCurrent2Row">1. 두 번째 행 선택 하기</button>
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnPopupIndex1">2. ItemIdex와 RowId 팝업하기</button>
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnPopupIndex2">4. ItemIdex와 RowId 다시 팝업하기</button>
+</p>
+
+
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnChangeOrder">3. 정렬순서 변경하기</button>
+</p>
+
+<p><button type="button" class="btn btn-primary btn-xs" id="btnChangeSortStyleNone">SortStyle을 NONE으로 설정</button>
+
+
+</p>
+<p>
+
+    <button type="button" class="btn btn-primary btn-xs" id="btnChangeSortStyleExclusive">SortStyle을 EXCLUSIVE로 설정</button>
+
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnChangeSortStyleInclusive">SortStyle을 INCLUSIVE로 설정</button>
+
+
+
+</p>
+<p>
+
+    <button type="button" class="btn btn-primary btn-xs" id="btnChangeSortStyleReverse">SortStyle을 REVERS로 설정</button>
+</p>
+<p>
+
+    <button type="button" class="btn btn-primary btn-xs" id="btnResetOrder">정렬상태 초기화</button>
+
+
+</p>
+<p>
+    <button type="button" class="btn btn-primary btn-xs" id="btnChangeOrders">국어, 수학 컬럼 순방향 정렬</button>
+
+</p>
+<p></p>
+<p></p>
+
+
+</body>
+</html>
